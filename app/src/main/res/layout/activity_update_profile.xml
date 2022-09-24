@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".profile.UpdateProfile">
+
+    <RelativeLayout
+        android:id="@+id/update_profile_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/update_profile_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:text="Update Name!"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:fontFamily="@font/russo_one"
+            android:textStyle="bold"
+            android:textSize="@dimen/_17sdp"
+            android:gravity="center"
+            tools:ignore="HardcodedText" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/update_text_layout_update_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint=""
+            app:boxStrokeColor="@color/off_orange"
+            app:boxStrokeWidth="1dp"
+            app:hintTextColor="#b2bec3"
+            android:layout_below="@+id/update_profile_text"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            android:textColorHint = "#b2bec3"
+            app:helperTextEnabled="true"
+            app:helperText=""
+            app:helperTextTextColor="@android:color/holo_red_dark"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/update_text_given_update_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:text=""
+                android:textColor="@color/black"
+                android:inputType="text"
+                android:imeOptions="actionDone"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/update_profile_button"
+            android:layout_width="match_parent"
+            android:text="UPDATE"
+            android:background="@drawable/custom_button"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="@dimen/_14sdp"
+            android:layout_margin ="@dimen/_20sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:fontFamily="@font/carter_one"
+            android:layout_height="wrap_content"
+            app:backgroundTint = "@null"
+            tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_indicator_update_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:indeterminate="true"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center" />
+
+</RelativeLayout>

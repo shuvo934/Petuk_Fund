@@ -1,0 +1,33 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.PetukFund" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/off_red</item>
+        <item name="colorPrimaryVariant">@color/off_orange</item>
+        <item name="colorOnPrimary">@color/off_black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/off_red</item>
+        <item name="colorSecondaryVariant">@color/off_orange</item>
+        <item name="colorOnSecondary">@color/off_black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+
+        <item name="android:navigationBarColor">@color/off_black</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+    </style>
+
+    <style name="CustomTextFont" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/carter_one</item>
+    </style>
+    <style name="Theme.MyApp.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialogText</item>
+    </style>
+
+    <style name="MaterialAlertDialogText" parent="@style/MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/off_red</item>
+        <item name="android:fontFamily">@font/carter_one</item>
+
+        <item name="android:textSize">18sp</item>
+    </style>
+</resources>

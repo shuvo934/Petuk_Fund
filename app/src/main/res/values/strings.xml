@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Petuk</string>
+    <string name="login_hint_name">User Name</string>
+    <string name="login_hint_password">Password</string>
+    <string name="remember_text">Remember Me</string>
+    <string name="password_not_match">The User Name and Password did not match</string>
+    <string name="login_text">Login</string>
+    <string name="petuk_name">PETUK</string>
+    <string name="balance_text">Balance</string>
+    <string name="total_in_text">Total In</string>
+    <string name="total_out_text">Total Out</string>
+    <string name="add_balance_text">ADD BALANCE</string>
+    <string name="deduct_balance_text">DEDUCT BALANCE</string>
+    <string name="user_choice">Select User <font color='red'>*</font></string>
+
+</resources>
