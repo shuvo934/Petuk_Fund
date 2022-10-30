@@ -30,7 +30,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:padding="@dimen/_13sdp">
+            android:padding="@dimen/_10sdp">
 
             <ImageView
                 android:id="@+id/contribution_menu_logo"

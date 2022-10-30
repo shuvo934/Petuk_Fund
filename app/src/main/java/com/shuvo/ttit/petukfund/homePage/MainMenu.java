@@ -13,6 +13,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -27,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
@@ -41,6 +44,7 @@ import com.shuvo.ttit.petukfund.profile.UserProfile;
 import com.shuvo.ttit.petukfund.userInfoLists.UserInfoList;
 
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -49,6 +53,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainMenu extends AppCompatActivity {
 
@@ -68,8 +74,11 @@ public class MainMenu extends AppCompatActivity {
     NestedScrollView fullLayout;
     CircularProgressIndicator circularProgressIndicator;
 
-    ImageView profile;
+    CircleImageView profile;
     ImageView logOut;
+
+    Bitmap bitmap;
+    Boolean imageFound = false;
 
     TextView totalBalance;
     TextView totalIn;
@@ -598,6 +607,16 @@ public class MainMenu extends AppCompatActivity {
                 selectedOutAmount = monthWiseDataLists.get(0).getAmountOut();
                 selectedBalanceAmount = monthWiseDataLists.get(0).getAmountBalance();
 
+                if (imageFound) {
+                    Glide.with(MainMenu.this)
+                            .load(bitmap)
+                            .fitCenter()
+                            .into(profile);
+                }
+                else {
+                    profile.setImageResource(R.drawable.profile);
+                }
+
                 conn = false;
                 connected = false;
 
@@ -664,6 +683,21 @@ public class MainMenu extends AppCompatActivity {
 
                 monthWiseDataLists.get(i).setAmountBalance(String.valueOf(thisMonthBalance));
             }
+
+            ResultSet resultSet = stmt.executeQuery("SELECT PIMAGE FROM PETUKS WHERE PID = "+userInfoLists.get(0).getP_id()+"");
+
+            while (resultSet.next()) {
+                Blob b=resultSet.getBlob(1);
+                if (b == null) {
+                    imageFound = false;
+                }
+                else {
+                    imageFound = true;
+                    byte[] barr =b.getBytes(1,(int)b.length());
+                    bitmap = BitmapFactory.decodeByteArray(barr,0,barr.length);
+                }
+            }
+            resultSet.close();
 
 
             connected = true;
