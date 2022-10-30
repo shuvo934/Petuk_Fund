@@ -413,16 +413,16 @@
                         android:textSize="@dimen/_14sdp"
                         android:textStyle="bold" />
 
-                    <!--                    <ImageView-->
-                    <!--                        android:id="@+id/edit_image_name"-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_alignParentEnd="true"-->
-                    <!--                        android:layout_centerVertical="true"-->
-                    <!--                        android:src="@drawable/edit_24"-->
-                    <!--                        android:layout_marginEnd="10dp"-->
-                    <!--                        app:tint="@color/off_red"-->
-                    <!--                        tools:ignore="ContentDescription" />-->
+                    <ImageView
+                        android:id="@+id/more_info_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_baseline_more_vert_24"
+                        android:layout_marginEnd="10dp"
+                        app:tint="@color/off_red"
+                        tools:ignore="ContentDescription" />
 
 
 

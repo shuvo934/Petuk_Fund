@@ -550,7 +550,7 @@ public class Balance extends AppCompatActivity {
                 rs.close();
 
                 stmt.executeUpdate("INSERT INTO PETUK_CREDIT(PCID, PC_YEAR, PC_MONTH, PC_PID, PC_AMOUNT, PC_DATE) \n" +
-                        "VALUES("+pc_id+", '"+year+"', '"+month+"', "+p_id+", "+tkAmount+", TO_DATE('"+full_date+"','DD-MON-YY'))");
+                        "VALUES("+pc_id+", '"+year+"', '"+month+"', "+p_id+", "+tkAmount+", SYSDATE)");
             }
             else {
                 ResultSet rs = stmt.executeQuery("SELECT NVL(MAX(PDID),0)+1 FROM PETUK_DEBIT");
@@ -561,7 +561,7 @@ public class Balance extends AppCompatActivity {
                 rs.close();
 
                 stmt.executeUpdate("INSERT INTO PETUK_DEBIT(PDID, PD_YEAR, PD_MONTH, PD_PID, PD_AMOUNT, PD_DATE) \n" +
-                        "VALUES("+pd_id+", '"+year+"', '"+month+"', "+p_id+", "+tkAmount+", TO_DATE('"+full_date+"','DD-MON-YY'))");
+                        "VALUES("+pd_id+", '"+year+"', '"+month+"', "+p_id+", "+tkAmount+", SYSDATE)");
             }
 
 

@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.shuvo.ttit.petukfund.R;
+import com.shuvo.ttit.petukfund.inouthistory.TransactionHistroy;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -62,6 +63,7 @@ public class UserProfile extends AppCompatActivity {
     TextView userPhone;
 
     TextView userContribution;
+    ImageView more;
 
     TextView userMail;
     ImageView editMail;
@@ -104,6 +106,7 @@ public class UserProfile extends AppCompatActivity {
         userPhone = findViewById(R.id.user_profile_phone);
 
         userContribution = findViewById(R.id.user_profile_contribution);
+        more = findViewById(R.id.more_info_amount);
 
         userMail = findViewById(R.id.user_profile_email);
         editMail = findViewById(R.id.edit_image_email);
@@ -154,6 +157,15 @@ public class UserProfile extends AppCompatActivity {
                 Intent intent = new Intent(UserProfile.this, UpdateProfile.class);
                 intent.putExtra("ATTRIBUTE", user_mail);
                 intent.putExtra("WHICH TO UPDATE", "EMAIL");
+                startActivity(intent);
+            }
+        });
+
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserProfile.this, TransactionHistroy.class);
+                intent.putExtra("VALUE", "PERSONAL");
                 startActivity(intent);
             }
         });

@@ -193,7 +193,7 @@ public class UpdatePic extends AppCompatActivity {
             //    Toast.makeText(MainActivity.this, "Connected",Toast.LENGTH_SHORT).show();
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            selectedImage.compress(Bitmap.CompressFormat.JPEG, 60, bos);
             byte[] bArray = bos.toByteArray();
             ByteArrayInputStream bs = new ByteArrayInputStream(bArray);
             InputStream in = new ByteArrayInputStream(bArray);

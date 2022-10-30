@@ -25,39 +25,56 @@
         android:theme="@style/Theme.PetukFund"
         tools:targetApi="31">
         <activity
-            android:name=".profile.UpdatePic"
-            android:exported="false"
+            android:name=".monthlyHistory.MonthlyTransaction"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name=".contribution.UserContribution"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".inouthistory.TransactionHistroy"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".profile.UpdatePic"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".profile.UpdateProfile"
-            android:exported="false" />
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".profile.UserProfile"
-            android:exported="false"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".balanceadjustment.Balance"
-            android:exported="false"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".homePage.MainMenu"
-            android:exported="false"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".login.Login"
-            android:exported="false"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

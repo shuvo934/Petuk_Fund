@@ -7,13 +7,15 @@ public class MonthWiseDataList {
     private String amountIn;
     private String amountOut;
     private String amountBalance;
+    private String year;
 
-    public MonthWiseDataList(String monthNo, String monthName, String amountIn, String amountOut, String amountBalance) {
+    public MonthWiseDataList(String monthNo, String monthName, String amountIn, String amountOut, String amountBalance,String year) {
         this.monthNo = monthNo;
         this.monthName = monthName;
         this.amountIn = amountIn;
         this.amountOut = amountOut;
         this.amountBalance = amountBalance;
+        this.year = year;
     }
 
     public String getMonthNo() {
@@ -54,5 +56,13 @@ public class MonthWiseDataList {
 
     public void setAmountBalance(String amountBalance) {
         this.amountBalance = amountBalance;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 }

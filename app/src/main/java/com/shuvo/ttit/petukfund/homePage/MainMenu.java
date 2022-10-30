@@ -32,8 +32,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.shuvo.ttit.petukfund.R;
 import com.shuvo.ttit.petukfund.balanceadjustment.Balance;
+import com.shuvo.ttit.petukfund.contribution.UserContribution;
 import com.shuvo.ttit.petukfund.homePage.lists.MonthWiseDataList;
+import com.shuvo.ttit.petukfund.inouthistory.TransactionHistroy;
 import com.shuvo.ttit.petukfund.login.Login;
+import com.shuvo.ttit.petukfund.monthlyHistory.MonthlyTransaction;
 import com.shuvo.ttit.petukfund.profile.UserProfile;
 import com.shuvo.ttit.petukfund.userInfoLists.UserInfoList;
 
@@ -75,6 +78,10 @@ public class MainMenu extends AppCompatActivity {
     Button addBalance;
     Button deductBalance;
 
+    Button addHistory;
+    Button deductHistory;
+    ImageView contribution;
+
     TextView amountInCurrent;
     TextView amountOutCurrent;
     TextView balanceCurrent;
@@ -87,6 +94,16 @@ public class MainMenu extends AppCompatActivity {
 
     String month = "";
     String month_full_name = "";
+    String yearNo = "";
+
+    String selectedMonthNo = "";
+    String selectedYearNo = "";
+    String selectedMonthName = "";
+    String selectedInAmount = "";
+    String selectedOutAmount = "";
+    String selectedBalanceAmount = "";
+
+    Button monthHistory;
 
     int inAmountThisMonth = 0;
     int outAmountThisMonth = 0;
@@ -123,10 +140,14 @@ public class MainMenu extends AppCompatActivity {
 
         addBalance = findViewById(R.id.add_balance_button);
         deductBalance = findViewById(R.id.deduct_balance_button);
+        addHistory = findViewById(R.id.add_transaction_history_button);
+        deductHistory = findViewById(R.id.deduct_transaction_history_button);
+        contribution = findViewById(R.id.total_contribution_of_all_user);
 
         amountInCurrent = findViewById(R.id.in_total_amount_current_month);
         amountOutCurrent = findViewById(R.id.out_total_amount_current_month);
         balanceCurrent = findViewById(R.id.total_fund_balance_current_month);
+        monthHistory = findViewById(R.id.monthly_history_button);
 
         previousM = findViewById(R.id.previous_month_button);
         nextM = findViewById(R.id.next_month_button);
@@ -156,10 +177,12 @@ public class MainMenu extends AppCompatActivity {
         if (userType.contains("U")) {
             addBalance.setVisibility(View.GONE);
             deductBalance.setVisibility(View.GONE);
+            contribution.setVisibility(View.GONE);
         }
         else {
             addBalance.setVisibility(View.VISIBLE);
             deductBalance.setVisibility(View.VISIBLE);
+            contribution.setVisibility(View.VISIBLE);
         }
 
         logOut.setOnClickListener(new View.OnClickListener() {
@@ -247,13 +270,15 @@ public class MainMenu extends AppCompatActivity {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM", Locale.getDefault());
         SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("MMMM",Locale.getDefault());
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy",Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
         Date c = calendar.getTime();
         month_full_name = simpleDateFormat1.format(c);
         month_full_name = month_full_name.toUpperCase();
         month = simpleDateFormat.format(c);
+        yearNo = simpleDateFormat2.format(c);
 
-        monthWiseDataLists.add(new MonthWiseDataList(month,month_full_name,"","",""));
+        monthWiseDataLists.add(new MonthWiseDataList(month,month_full_name,"","","",yearNo));
         System.out.println("MONTH: " + month);
 
         for (int i = 0 ; i < 5; i++) {
@@ -262,8 +287,9 @@ public class MainMenu extends AppCompatActivity {
             month_full_name = simpleDateFormat1.format(c);
             month_full_name = month_full_name.toUpperCase();
             month = simpleDateFormat.format(c);
+            yearNo = simpleDateFormat2.format(c);
 
-            monthWiseDataLists.add(new MonthWiseDataList(month,month_full_name,"","",""));
+            monthWiseDataLists.add(new MonthWiseDataList(month,month_full_name,"","","",yearNo));
             System.out.println("MONTH: " + month);
         }
 
@@ -280,6 +306,32 @@ public class MainMenu extends AppCompatActivity {
             intent.putExtra("BALANCE TYPE","DEDUCT");
             intent.putExtra("TOTAL", total_balance);
             startActivity(intent);
+        });
+
+        addHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainMenu.this, TransactionHistroy.class);
+                intent.putExtra("VALUE","ADD");
+                startActivity(intent);
+            }
+        });
+
+        deductHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainMenu.this, TransactionHistroy.class);
+                intent.putExtra("VALUE","DEDUCT");
+                startActivity(intent);
+            }
+        });
+
+        contribution.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainMenu.this, UserContribution.class);
+                startActivity(intent);
+            }
         });
 
         profile.setOnClickListener(view -> {
@@ -305,6 +357,13 @@ public class MainMenu extends AppCompatActivity {
                     outAmountThisMonth = Integer.parseInt(monthWiseDataLists.get(month_i).getAmountOut());
 
                     int thisMonthBalance = Integer.parseInt(monthWiseDataLists.get(month_i).getAmountBalance());
+
+                    selectedMonthNo = monthWiseDataLists.get(month_i).getMonthNo();
+                    selectedYearNo = monthWiseDataLists.get(month_i).getYear();
+                    selectedMonthName = monthWiseDataLists.get(month_i).getMonthName();
+                    selectedInAmount = monthWiseDataLists.get(month_i).getAmountIn();
+                    selectedOutAmount = monthWiseDataLists.get(month_i).getAmountOut();
+                    selectedBalanceAmount = monthWiseDataLists.get(month_i).getAmountBalance();
 
                     String th_bal = thisMonthBalance + " TK";
                     balanceCurrent.setText(th_bal);
@@ -344,6 +403,13 @@ public class MainMenu extends AppCompatActivity {
 
                     int thisMonthBalance = Integer.parseInt(monthWiseDataLists.get(month_i).getAmountBalance());
 
+                    selectedMonthNo = monthWiseDataLists.get(month_i).getMonthNo();
+                    selectedYearNo = monthWiseDataLists.get(month_i).getYear();
+                    selectedMonthName = monthWiseDataLists.get(month_i).getMonthName();
+                    selectedInAmount = monthWiseDataLists.get(month_i).getAmountIn();
+                    selectedOutAmount = monthWiseDataLists.get(month_i).getAmountOut();
+                    selectedBalanceAmount = monthWiseDataLists.get(month_i).getAmountBalance();
+
                     String th_bal = thisMonthBalance + " TK";
                     balanceCurrent.setText(th_bal);
 
@@ -360,6 +426,20 @@ public class MainMenu extends AppCompatActivity {
                     }
                 }
 
+            }
+        });
+
+        monthHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainMenu.this, MonthlyTransaction.class);
+                intent.putExtra("MONTH_NO",selectedMonthNo);
+                intent.putExtra("YEAR_NO",selectedYearNo);
+                intent.putExtra("MONTH_NAME",selectedMonthName);
+                intent.putExtra("IN_AMOUNT",selectedInAmount);
+                intent.putExtra("OUT_AMOUNT",selectedOutAmount);
+                intent.putExtra("BALANCE",selectedBalanceAmount);
+                startActivity(intent);
             }
         });
 
@@ -511,6 +591,12 @@ public class MainMenu extends AppCompatActivity {
                 String mn = monthWiseDataLists.get(0).getMonthName();
                 monthSelected.setText(mn);
                 month_i = 0;
+                selectedMonthNo = monthWiseDataLists.get(0).getMonthNo();
+                selectedYearNo = monthWiseDataLists.get(0).getYear();
+                selectedMonthName = monthWiseDataLists.get(0).getMonthName();
+                selectedInAmount = monthWiseDataLists.get(0).getAmountIn();
+                selectedOutAmount = monthWiseDataLists.get(0).getAmountOut();
+                selectedBalanceAmount = monthWiseDataLists.get(0).getAmountBalance();
 
                 conn = false;
                 connected = false;
@@ -556,7 +642,7 @@ public class MainMenu extends AppCompatActivity {
             rs1.close();
 
             for (int i = 0 ; i < monthWiseDataLists.size(); i++) {
-                ResultSet rs2 = stmt.executeQuery("Select NVL(SUM(PC_AMOUNT),0) from PETUK_CREDIT WHERE PC_MONTH = '"+monthWiseDataLists.get(i).getMonthNo()+"'");
+                ResultSet rs2 = stmt.executeQuery("Select NVL(SUM(PC_AMOUNT),0) from PETUK_CREDIT WHERE PC_MONTH = '"+monthWiseDataLists.get(i).getMonthNo()+"' AND PC_YEAR = '"+monthWiseDataLists.get(i).getYear()+"'");
 
                 while (rs2.next()) {
                     inAmountThisMonth = rs2.getInt(1);
@@ -565,7 +651,7 @@ public class MainMenu extends AppCompatActivity {
 
                 monthWiseDataLists.get(i).setAmountIn(String.valueOf(inAmountThisMonth));
 
-                ResultSet rs3 = stmt.executeQuery("Select NVL(SUM(PD_AMOUNT),0) from PETUK_DEBIT WHERE PD_MONTH = '"+monthWiseDataLists.get(i).getMonthNo()+"'");
+                ResultSet rs3 = stmt.executeQuery("Select NVL(SUM(PD_AMOUNT),0) from PETUK_DEBIT WHERE PD_MONTH = '"+monthWiseDataLists.get(i).getMonthNo()+"' AND PD_YEAR = '"+monthWiseDataLists.get(i).getYear()+"'");
 
                 while (rs3.next()) {
                     outAmountThisMonth = rs3.getInt(1);

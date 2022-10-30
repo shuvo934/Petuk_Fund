@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ecf0f1"
+    android:layout_marginTop="@dimen/_2sdp"
+    android:layout_marginBottom="@dimen/_2sdp"
+    android:gravity="center"
+    android:weightSum="10">
+
+    <TextView
+        android:id="@+id/name_of_contributor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="6"
+        android:layout_marginStart="@dimen/_3sdp"
+        android:layout_marginEnd="@dimen/_3sdp"
+        android:gravity="center"
+        android:text=""
+        android:fontFamily="@font/carter_one"
+        android:textSize="@dimen/_12sdp"
+        android:padding="@dimen/_2sdp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/amount_of_contribution"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="4"
+        android:layout_marginStart="@dimen/_3sdp"
+        android:layout_marginEnd="@dimen/_3sdp"
+        android:gravity="center"
+        android:fontFamily="@font/carter_one"
+        android:padding="@dimen/_2sdp"
+        android:text=""
+        android:textSize="@dimen/_12sdp"
+        android:textStyle="bold" />
+
+</LinearLayout>

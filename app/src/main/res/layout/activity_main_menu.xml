@@ -110,38 +110,59 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="@dimen/_200sdp"
-                android:layout_height="@dimen/_200sdp"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                android:layout_marginTop="@dimen/_30sdp"
-                android:layout_marginBottom="@dimen/_20sdp"
-                android:background="@drawable/custom_circle">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/balance_text"
-                    android:textColor="@color/off_black"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_16sdp"
-                    android:fontFamily="@font/carter_one"/>
+                <ImageView
+                    android:id="@+id/total_contribution_of_all_user"
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:src="@drawable/money_icon"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    tools:ignore="ContentDescription" />
 
-                <TextView
-                    android:id="@+id/total_fund_balance"
-                    android:layout_width="@dimen/_150sdp"
-                    android:layout_height="@dimen/_100sdp"
+                <LinearLayout
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="@dimen/_200sdp"
                     android:gravity="center"
                     android:layout_gravity="center"
-                    android:text=""
-                    android:textAppearance="@style/CustomTextFont"
-                    android:textStyle="bold"
-                    android:textColor="@color/off_red"
-                    android:textSize="@dimen/_25sdp"/>
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:background="@drawable/custom_circle">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/balance_text"
+                        android:textColor="@color/off_black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_16sdp"
+                        android:fontFamily="@font/carter_one"/>
+
+                    <TextView
+                        android:id="@+id/total_fund_balance"
+                        android:layout_width="@dimen/_150sdp"
+                        android:layout_height="@dimen/_100sdp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:text=""
+                        android:textAppearance="@style/CustomTextFont"
+                        android:textStyle="bold"
+                        android:textColor="@color/off_red"
+                        android:textSize="@dimen/_25sdp"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -208,6 +229,20 @@
                             android:backgroundTint="@color/teal_700"
                             android:layout_marginTop="@dimen/_10sdp"/>
 
+                        <Button
+                            android:id="@+id/add_transaction_history_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/trans_text"
+                            android:fontFamily="@font/russo_one"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_9sdp"
+                            android:layout_gravity="center"
+                            android:backgroundTint="@color/teal_700"
+                            android:layout_marginTop="@dimen/_5sdp"/>
+
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -269,6 +304,19 @@
                             android:textSize="@dimen/_9sdp"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_10sdp"/>
+
+                        <Button
+                            android:id="@+id/deduct_transaction_history_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/trans_text"
+                            android:fontFamily="@font/russo_one"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_9sdp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_5sdp"/>
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -463,6 +511,19 @@
                             android:textSize="@dimen/_14sdp" />
 
                     </LinearLayout>
+
+                    <Button
+                        android:id="@+id/monthly_history_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/russo_one"
+                        android:textSize="@dimen/_9sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_gravity="center"
+                        android:text="MONTHLY HISTORY"
+                        tools:ignore="HardcodedText" />
 
 
                 </LinearLayout>

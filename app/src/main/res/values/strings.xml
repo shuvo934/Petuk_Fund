@@ -10,6 +10,7 @@
     <string name="total_in_text">Total In</string>
     <string name="total_out_text">Total Out</string>
     <string name="add_balance_text">ADD BALANCE</string>
+    <string name="trans_text">TRANS HISTORY</string>
     <string name="deduct_balance_text">DEDUCT BALANCE</string>
     <string name="user_choice">Select User <font color='red'>*</font></string>
 
