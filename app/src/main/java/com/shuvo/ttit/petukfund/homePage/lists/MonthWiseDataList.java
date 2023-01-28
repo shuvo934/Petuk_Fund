@@ -8,14 +8,22 @@ public class MonthWiseDataList {
     private String amountOut;
     private String amountBalance;
     private String year;
+    private boolean monthIn;
+    private boolean monthOut;
+    private boolean updatedIn;
+    private boolean updatedOut;
 
-    public MonthWiseDataList(String monthNo, String monthName, String amountIn, String amountOut, String amountBalance,String year) {
+    public MonthWiseDataList(String monthNo, String monthName, String amountIn, String amountOut, String amountBalance,String year, boolean monthIn, boolean monthOut, boolean updatedIn, boolean updatedOut) {
         this.monthNo = monthNo;
         this.monthName = monthName;
         this.amountIn = amountIn;
         this.amountOut = amountOut;
         this.amountBalance = amountBalance;
         this.year = year;
+        this.monthIn = monthIn;
+        this.monthOut = monthOut;
+        this.updatedIn = updatedIn;
+        this.updatedOut = updatedOut;
     }
 
     public String getMonthNo() {
@@ -64,5 +72,37 @@ public class MonthWiseDataList {
 
     public void setYear(String year) {
         this.year = year;
+    }
+
+    public boolean isMonthIn() {
+        return monthIn;
+    }
+
+    public void setMonthIn(boolean monthIn) {
+        this.monthIn = monthIn;
+    }
+
+    public boolean isMonthOut() {
+        return monthOut;
+    }
+
+    public void setMonthOut(boolean monthOut) {
+        this.monthOut = monthOut;
+    }
+
+    public boolean isUpdatedIn() {
+        return updatedIn;
+    }
+
+    public void setUpdatedIn(boolean updatedIn) {
+        this.updatedIn = updatedIn;
+    }
+
+    public boolean isUpdatedOut() {
+        return updatedOut;
+    }
+
+    public void setUpdatedOut(boolean updatedOut) {
+        this.updatedOut = updatedOut;
     }
 }

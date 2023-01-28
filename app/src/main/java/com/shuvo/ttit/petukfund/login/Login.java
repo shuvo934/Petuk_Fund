@@ -1,17 +1,17 @@
 package com.shuvo.ttit.petukfund.login;
 
-import static com.shuvo.ttit.petukfund.connection.OracleConnection.createConnection;
+//import static com.shuvo.ttit.petukfund.connection.OracleConnection.createConnection;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
+//import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
+//import android.net.ConnectivityManager;
+//import android.net.NetworkInfo;
+//import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -26,6 +26,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
@@ -33,10 +39,14 @@ import com.shuvo.ttit.petukfund.R;
 import com.shuvo.ttit.petukfund.homePage.MainMenu;
 import com.shuvo.ttit.petukfund.userInfoLists.UserInfoList;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+//import java.io.IOException;
+//import java.sql.Connection;
+//import java.sql.ResultSet;
+//import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -55,10 +65,10 @@ public class Login extends AppCompatActivity {
     String password = "";
 
     private Boolean conn = false;
-    private Boolean connected = false;
-
-    Connection connection;
-    private AsyncTask mTask;
+//    private Boolean connected = false;
+//
+//    Connection connection;
+//    private AsyncTask mTask;
 
     public static final String MyPREFERENCES = "UserPassPETUK" ;
     public static final String user_emp_code = "nameKey";
@@ -88,6 +98,8 @@ public class Login extends AppCompatActivity {
 
     LinearLayout fullLayout;
     CircularProgressIndicator circularProgressIndicator;
+
+    boolean loading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +167,8 @@ public class Login extends AppCompatActivity {
 
             if (!mobile.isEmpty() && !password.isEmpty()) {
 
-                mTask = new CheckLogin().execute();
+                //mTask = new CheckLogin().execute();
+                getUserFromApi();
 
             } else {
                 Toast.makeText(getApplicationContext(), "Please Give Mobile number and Password", Toast.LENGTH_SHORT).show();
@@ -179,21 +192,37 @@ public class Login extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (mTask != null) {
-            if (mTask.getStatus().toString().equals("RUNNING")) {
-                Toast.makeText(getApplicationContext(),"Please wait while loading",Toast.LENGTH_SHORT).show();
-            } else {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(Login.this)
-                        .setTitle("EXIT!")
-                        .setMessage("Do you want to exit?")
-                        .setIcon(R.drawable.petuk_icon)
-                        .setPositiveButton("Yes", (dialog, which) -> System.exit(0))
-                        .setNegativeButton("No", (dialog, which) -> {
-                            //Do nothing
-                        });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-            }
+//        if (mTask != null) {
+//            if (mTask.getStatus().toString().equals("RUNNING")) {
+//                Toast.makeText(getApplicationContext(),"Please wait while loading",Toast.LENGTH_SHORT).show();
+//            } else {
+//                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(Login.this)
+//                        .setTitle("EXIT!")
+//                        .setMessage("Do you want to exit?")
+//                        .setIcon(R.drawable.petuk_icon)
+//                        .setPositiveButton("Yes", (dialog, which) -> System.exit(0))
+//                        .setNegativeButton("No", (dialog, which) -> {
+//                            //Do nothing
+//                        });
+//                AlertDialog alertDialog = alertDialogBuilder.create();
+//                alertDialog.show();
+//            }
+//        }
+//        else {
+//            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(Login.this)
+//                    .setTitle("EXIT!")
+//                    .setMessage("Do you want to exit?")
+//                    .setIcon(R.drawable.petuk_icon)
+//                    .setPositiveButton("Yes", (dialog, which) -> System.exit(0))
+//                    .setNegativeButton("No", (dialog, which) -> {
+//                        //Do nothing
+//                    });
+//            AlertDialog alertDialog = alertDialogBuilder.create();
+//            alertDialog.show();
+//        }
+
+        if (loading) {
+            Toast.makeText(getApplicationContext(),"Please wait while loading",Toast.LENGTH_SHORT).show();
         }
         else {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(Login.this)
@@ -218,190 +247,358 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    public boolean isConnected () {
-        boolean connected = false;
-        try {
-            ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo nInfo = cm.getActiveNetworkInfo();
-            connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
-            return connected;
-        } catch (Exception e) {
-            Log.e("Connectivity Exception", e.getMessage());
-        }
-        return connected;
-    }
+//    public boolean isConnected () {
+//        boolean connected = false;
+//        try {
+//            ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+//            NetworkInfo nInfo = cm.getActiveNetworkInfo();
+//            connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
+//            return connected;
+//        } catch (Exception e) {
+//            Log.e("Connectivity Exception", e.getMessage());
+//        }
+//        return connected;
+//    }
+//
+//    public boolean isOnline () {
+//
+//        Runtime runtime = Runtime.getRuntime();
+//        try {
+//            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+//            int exitValue = ipProcess.waitFor();
+//            return (exitValue == 0);
+//        } catch (IOException | InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return false;
+//    }
 
-    public boolean isOnline () {
+//    @SuppressLint("StaticFieldLeak")
+//    public class CheckLogin extends AsyncTask<Void, Void, Void> {
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//
+//            circularProgressIndicator.setVisibility(View.VISIBLE);
+//            fullLayout.setVisibility(View.INVISIBLE);
+//        }
+//
+//        @Override
+//        protected Void doInBackground(Void... voids) {
+//            if (isConnected() && isOnline()) {
+//
+//                LoginQuery();
+//                if (connected) {
+//                    conn = true;
+//                }
+//
+//            } else {
+//                conn = false;
+//            }
+//
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Void aVoid) {
+//            super.onPostExecute(aVoid);
+//
+//            circularProgressIndicator.setVisibility(View.GONE);
+//            fullLayout.setVisibility(View.VISIBLE);
+//            if (conn) {
+//
+//                boolean infoConnected = userInfoLists.size() != 0;
+//
+//                if (infoConnected) {
+//
+//                    if (checkBox.isChecked()) {
+//                        System.out.println("Remembered");
+//                        SharedPreferences.Editor editor = sharedpreferences.edit();
+//                        editor.remove(user_emp_code);
+//                        editor.remove(user_password);
+//                        editor.remove(checked);
+//                        editor.putString(user_emp_code,mobile);
+//                        editor.putString(user_password,password);
+//                        editor.putBoolean(checked,true);
+//                        editor.apply();
+//                        editor.commit();
+//
+//                        SharedPreferences.Editor editor1 = sharedLogin.edit();
+//                        editor1.remove(P_ID);
+//                        editor1.remove(P_NAME);
+//                        editor1.remove(P_DESIG);
+//                        editor1.remove(P_PHONE);
+//                        editor1.remove(P_EMAIL);
+//                        editor1.remove(P_J_DATE);
+//                        editor1.remove(P_TYPE);
+//                        editor1.remove(LOGIN_TF);
+//
+//                        editor1.putString(P_ID, userInfoLists.get(0).getP_id());
+//                        editor1.putString(P_NAME, userInfoLists.get(0).getP_name());
+//                        editor1.putString(P_DESIG, userInfoLists.get(0).getP_designation());
+//                        editor1.putString(P_PHONE, userInfoLists.get(0).getP_phone());
+//                        editor1.putString(P_EMAIL, userInfoLists.get(0).getP_email());
+//                        editor1.putString(P_J_DATE,userInfoLists.get(0).getP_jdate());
+//                        editor1.putString(P_TYPE,userInfoLists.get(0).getP_type());
+//                        editor1.putBoolean(LOGIN_TF,true);
+//
+//                        editor1.apply();
+//                        editor1.commit();
+//                    }
+//                    else {
+//                        System.out.println("Not Remembered");
+//                        SharedPreferences.Editor editor = sharedpreferences.edit();
+//                        editor.remove(user_emp_code);
+//                        editor.remove(user_password);
+//                        editor.remove(checked);
+//
+//                        editor.apply();
+//                        editor.commit();
+//
+//                        SharedPreferences.Editor editor1 = sharedLogin.edit();
+//                        editor1.remove(P_ID);
+//                        editor1.remove(P_NAME);
+//                        editor1.remove(P_DESIG);
+//                        editor1.remove(P_PHONE);
+//                        editor1.remove(P_EMAIL);
+//                        editor1.remove(P_J_DATE);
+//                        editor1.remove(P_TYPE);
+//                        editor1.remove(LOGIN_TF);
+//
+//                        editor1.apply();
+//                        editor1.commit();
+//                    }
+//
+//                    Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(getApplicationContext(), MainMenu.class);
+//                    startActivity(intent);
+//                    finish();
+//
+//                }
+//                else {
+//                    login_failed.setVisibility(View.VISIBLE);
+//                }
+//
+//                conn = false;
+//                connected = false;
+//
+//
+//            }
+//            else {
+//                AlertDialog dialog = new AlertDialog.Builder(Login.this)
+//                        .setMessage("Slow Internet or Please Check Your Internet Connection")
+//                        .setPositiveButton("Retry", null)
+//                        .show();
+//
+////                dialog.setCancelable(false);
+////                dialog.setCanceledOnTouchOutside(false);
+//                Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//                positive.setOnClickListener(v -> {
+//
+//                    mTask = new CheckLogin().execute();
+//                    dialog.dismiss();
+//                });
+//            }
+//        }
+//    }
+//
+//    public void LoginQuery () {
+//
+//        try {
+//            this.connection = createConnection();
+//
+//            userInfoLists = new ArrayList<>();
+//
+//            Statement stmt = connection.createStatement();
+//
+//            ResultSet rs = stmt.executeQuery("Select pid , pname, desig, phone, email, jdate, ptype \n" +
+//                    "from petuks \n" +
+//                    "where  phone = '"+mobile+"' and \n" +
+//                    "pword = HAMID_ENCRYPT_DESCRIPTION_PACK.HEDP_ENCRYPT('"+password+"')");
+//
+//            while (rs.next()) {
+//                userInfoLists.add(new UserInfoList(rs.getString(1), rs.getString(2), rs.getString(3),
+//                        rs.getString(4), rs.getString(5), rs.getString(6),rs.getString(7)));
+//            }
+//
+//            connected = true;
+//
+//            connection.close();
+//
+//        } catch (Exception e) {
+//
+//            Log.i("ERRRRR", e.getLocalizedMessage());
+//            e.printStackTrace();
+//        }
+//
+//    }
 
-        Runtime runtime = Runtime.getRuntime();
-        try {
-            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
-            int exitValue = ipProcess.waitFor();
-            return (exitValue == 0);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+    private void getUserFromApi() {
 
-        return false;
-    }
+        circularProgressIndicator.setVisibility(View.VISIBLE);
+        fullLayout.setVisibility(View.INVISIBLE);
+        loading = true;
 
-    @SuppressLint("StaticFieldLeak")
-    public class CheckLogin extends AsyncTask<Void, Void, Void> {
+        String url = "http://103.56.208.123:8001/apex/petuk_api/search/user";
+        url = url + "?phone=" + mobile + "&pword=" + password;
+        System.out.println(url);
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+        RequestQueue requestQueue = Volley.newRequestQueue(Login.this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
 
-            circularProgressIndicator.setVisibility(View.VISIBLE);
-            fullLayout.setVisibility(View.INVISIBLE);
-        }
+                userInfoLists = new ArrayList<>();
+                try {
 
-        @Override
-        protected Void doInBackground(Void... voids) {
-            if (isConnected() && isOnline()) {
-
-                LoginQuery();
-                if (connected) {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String items = jsonObject.getString("items");
+                    String count = jsonObject.getString("count");
+                    System.out.println("Count: "+ count);
                     conn = true;
-                }
 
-            } else {
-                conn = false;
-            }
+                    if (!count.equals("0")) {
+                        JSONArray array = new JSONArray(items);
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject userInfo = array.getJSONObject(i);
+                            String pid = userInfo.getString("pid");
+                            String pname = userInfo.getString("pname");
+                            String desig = userInfo.getString("desig");
+                            String phone = userInfo.getString("phone");
+                            String email = userInfo.getString("email");
+                            String jdate = userInfo.getString("jdate");
+                            String ptype = userInfo.getString("ptype");
 
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            circularProgressIndicator.setVisibility(View.GONE);
-            fullLayout.setVisibility(View.VISIBLE);
-            if (conn) {
-
-                boolean infoConnected = userInfoLists.size() != 0;
-
-                if (infoConnected) {
-
-                    if (checkBox.isChecked()) {
-                        System.out.println("Remembered");
-                        SharedPreferences.Editor editor = sharedpreferences.edit();
-                        editor.remove(user_emp_code);
-                        editor.remove(user_password);
-                        editor.remove(checked);
-                        editor.putString(user_emp_code,mobile);
-                        editor.putString(user_password,password);
-                        editor.putBoolean(checked,true);
-                        editor.apply();
-                        editor.commit();
-
-                        SharedPreferences.Editor editor1 = sharedLogin.edit();
-                        editor1.remove(P_ID);
-                        editor1.remove(P_NAME);
-                        editor1.remove(P_DESIG);
-                        editor1.remove(P_PHONE);
-                        editor1.remove(P_EMAIL);
-                        editor1.remove(P_J_DATE);
-                        editor1.remove(P_TYPE);
-                        editor1.remove(LOGIN_TF);
-
-                        editor1.putString(P_ID, userInfoLists.get(0).getP_id());
-                        editor1.putString(P_NAME, userInfoLists.get(0).getP_name());
-                        editor1.putString(P_DESIG, userInfoLists.get(0).getP_designation());
-                        editor1.putString(P_PHONE, userInfoLists.get(0).getP_phone());
-                        editor1.putString(P_EMAIL, userInfoLists.get(0).getP_email());
-                        editor1.putString(P_J_DATE,userInfoLists.get(0).getP_jdate());
-                        editor1.putString(P_TYPE,userInfoLists.get(0).getP_type());
-                        editor1.putBoolean(LOGIN_TF,true);
-
-                        editor1.apply();
-                        editor1.commit();
+                            userInfoLists.add(new UserInfoList(pid,pname,desig,phone,email,jdate,ptype));
+                            System.out.println(pid +"\n"+ pname +"\n"+ desig +"\n"+ phone +"\n"+ email +"\n"+ jdate + "\n"+ ptype);
+                        }
                     }
                     else {
-                        System.out.println("Not Remembered");
-                        SharedPreferences.Editor editor = sharedpreferences.edit();
-                        editor.remove(user_emp_code);
-                        editor.remove(user_password);
-                        editor.remove(checked);
-
-                        editor.apply();
-                        editor.commit();
-
-                        SharedPreferences.Editor editor1 = sharedLogin.edit();
-                        editor1.remove(P_ID);
-                        editor1.remove(P_NAME);
-                        editor1.remove(P_DESIG);
-                        editor1.remove(P_PHONE);
-                        editor1.remove(P_EMAIL);
-                        editor1.remove(P_J_DATE);
-                        editor1.remove(P_TYPE);
-                        editor1.remove(LOGIN_TF);
-
-                        editor1.apply();
-                        editor1.commit();
+                        Toast.makeText(getApplicationContext(),"No User Found",Toast.LENGTH_SHORT).show();
                     }
 
-                    Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), MainMenu.class);
-                    startActivity(intent);
-                    finish();
+                    userDataManage();
+                }
+                catch (JSONException e) {
+                    conn = false;
+                    e.printStackTrace();
+                    userDataManage();
+                }
+                circularProgressIndicator.setVisibility(View.GONE);
+                fullLayout.setVisibility(View.VISIBLE);
+                loading = false;
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                circularProgressIndicator.setVisibility(View.GONE);
+                fullLayout.setVisibility(View.VISIBLE);
+                loading = false;
+                conn = false;
+                Log.i("Error", error.toString());
+                userDataManage();
+            }
+        });
 
+        requestQueue.add(stringRequest);
+
+    }
+
+    private void userDataManage() {
+        if (conn) {
+
+            boolean infoConnected = userInfoLists.size() != 0;
+
+            if (infoConnected) {
+
+                if (checkBox.isChecked()) {
+                    System.out.println("Remembered");
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.remove(user_emp_code);
+                    editor.remove(user_password);
+                    editor.remove(checked);
+                    editor.putString(user_emp_code,mobile);
+                    editor.putString(user_password,password);
+                    editor.putBoolean(checked,true);
+                    editor.apply();
+                    editor.commit();
+
+                    SharedPreferences.Editor editor1 = sharedLogin.edit();
+                    editor1.remove(P_ID);
+                    editor1.remove(P_NAME);
+                    editor1.remove(P_DESIG);
+                    editor1.remove(P_PHONE);
+                    editor1.remove(P_EMAIL);
+                    editor1.remove(P_J_DATE);
+                    editor1.remove(P_TYPE);
+                    editor1.remove(LOGIN_TF);
+
+                    editor1.putString(P_ID, userInfoLists.get(0).getP_id());
+                    editor1.putString(P_NAME, userInfoLists.get(0).getP_name());
+                    editor1.putString(P_DESIG, userInfoLists.get(0).getP_designation());
+                    editor1.putString(P_PHONE, userInfoLists.get(0).getP_phone());
+                    editor1.putString(P_EMAIL, userInfoLists.get(0).getP_email());
+                    editor1.putString(P_J_DATE,userInfoLists.get(0).getP_jdate());
+                    editor1.putString(P_TYPE,userInfoLists.get(0).getP_type());
+                    editor1.putBoolean(LOGIN_TF,true);
+
+                    editor1.apply();
+                    editor1.commit();
                 }
                 else {
-                    login_failed.setVisibility(View.VISIBLE);
+                    System.out.println("Not Remembered");
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.remove(user_emp_code);
+                    editor.remove(user_password);
+                    editor.remove(checked);
+
+                    editor.apply();
+                    editor.commit();
+
+                    SharedPreferences.Editor editor1 = sharedLogin.edit();
+                    editor1.remove(P_ID);
+                    editor1.remove(P_NAME);
+                    editor1.remove(P_DESIG);
+                    editor1.remove(P_PHONE);
+                    editor1.remove(P_EMAIL);
+                    editor1.remove(P_J_DATE);
+                    editor1.remove(P_TYPE);
+                    editor1.remove(LOGIN_TF);
+
+                    editor1.apply();
+                    editor1.commit();
                 }
 
-                conn = false;
-                connected = false;
+                Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), MainMenu.class);
+                startActivity(intent);
+                finish();
 
+            }
+            else {
+                login_failed.setVisibility(View.VISIBLE);
+            }
 
-            } else {
-                AlertDialog dialog = new AlertDialog.Builder(Login.this)
-                        .setMessage("Slow Internet or Please Check Your Internet Connection")
-                        .setPositiveButton("Retry", null)
-                        .show();
+            conn = false;
+//            connected = false;
+
+        }
+        else {
+            AlertDialog dialog = new AlertDialog.Builder(Login.this)
+                    .setMessage("Slow Internet or Please Check Your Internet Connection")
+                    .setPositiveButton("Retry", null)
+                    .show();
 
 //                dialog.setCancelable(false);
 //                dialog.setCanceledOnTouchOutside(false);
-                Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positive.setOnClickListener(v -> {
+            Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positive.setOnClickListener(v -> {
 
-                    mTask = new CheckLogin().execute();
-                    dialog.dismiss();
-                });
-            }
+                getUserFromApi();
+                dialog.dismiss();
+            });
         }
-    }
-
-    public void LoginQuery () {
-
-        try {
-            this.connection = createConnection();
-
-            userInfoLists = new ArrayList<>();
-
-            Statement stmt = connection.createStatement();
-
-            ResultSet rs = stmt.executeQuery("Select pid , pname, desig, phone, email, jdate, ptype \n" +
-                    "from petuks \n" +
-                    "where  phone = '"+mobile+"' and \n" +
-                    "pword = HAMID_ENCRYPT_DESCRIPTION_PACK.HEDP_ENCRYPT('"+password+"')");
-
-            while (rs.next()) {
-                userInfoLists.add(new UserInfoList(rs.getString(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4), rs.getString(5), rs.getString(6),rs.getString(7)));
-            }
-
-            connected = true;
-
-            connection.close();
-
-        } catch (Exception e) {
-
-            Log.i("ERRRRR", e.getLocalizedMessage());
-            e.printStackTrace();
-        }
-
     }
 }

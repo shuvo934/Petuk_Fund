@@ -1,6 +1,6 @@
 package com.shuvo.ttit.petukfund.monthlyHistory;
 
-import static com.shuvo.ttit.petukfund.connection.OracleConnection.createConnection;
+//import static com.shuvo.ttit.petukfund.connection.OracleConnection.createConnection;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
+//import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
+//import android.net.ConnectivityManager;
+//import android.net.NetworkInfo;
+//import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +21,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.shuvo.ttit.petukfund.R;
 import com.shuvo.ttit.petukfund.contribution.UserContribution;
@@ -29,10 +35,14 @@ import com.shuvo.ttit.petukfund.contribution.lists.ContributionLIst;
 import com.shuvo.ttit.petukfund.monthlyHistory.adapters.InOutBalanceAdapter;
 import com.shuvo.ttit.petukfund.monthlyHistory.lists.InOutBalanceSheetList;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+//import java.io.IOException;
+//import java.sql.Connection;
+//import java.sql.ResultSet;
+//import java.sql.Statement;
 import java.util.ArrayList;
 
 public class MonthlyTransaction extends AppCompatActivity {
@@ -48,10 +58,11 @@ public class MonthlyTransaction extends AppCompatActivity {
     ArrayList<ContributionLIst> contributionLIsts;
 
     private Boolean conn = false;
-    private Boolean connected = false;
+//    private Boolean connected = false;
+    boolean loading = false;
 
-    Connection connection;
-    private AsyncTask mTask;
+//    Connection connection;
+//    private AsyncTask mTask;
 
     String month = "";
     String year = "";
@@ -126,192 +137,384 @@ public class MonthlyTransaction extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(outView.getContext(),DividerItemDecoration.VERTICAL);
         outView.addItemDecoration(dividerItemDecoration1);
 
-        mTask = new Check().execute();
+//        mTask = new Check().execute();
+        getMonthData();
     }
 
     @Override
     public void onBackPressed() {
 
-        if (mTask != null) {
-            if (mTask.getStatus().toString().equals("RUNNING")) {
-                Toast.makeText(getApplicationContext(),"Please wait while loading",Toast.LENGTH_SHORT).show();
-            } else {
-                finish();
-            }
+//        if (mTask != null) {
+//            if (mTask.getStatus().toString().equals("RUNNING")) {
+//                Toast.makeText(getApplicationContext(),"Please wait while loading",Toast.LENGTH_SHORT).show();
+//            } else {
+//                finish();
+//            }
+//        }
+//        else {
+//            finish();
+//        }
+        if (loading) {
+            Toast.makeText(getApplicationContext(),"Please wait while loading",Toast.LENGTH_SHORT).show();
         }
         else {
             finish();
         }
     }
 
-    public boolean isConnected () {
-        boolean connected = false;
-        try {
-            ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo nInfo = cm.getActiveNetworkInfo();
-            connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
-            return connected;
-        } catch (Exception e) {
-            Log.e("Connectivity Exception", e.getMessage());
-        }
-        return connected;
-    }
+//    public boolean isConnected () {
+//        boolean connected = false;
+//        try {
+//            ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+//            NetworkInfo nInfo = cm.getActiveNetworkInfo();
+//            connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
+//            return connected;
+//        } catch (Exception e) {
+//            Log.e("Connectivity Exception", e.getMessage());
+//        }
+//        return connected;
+//    }
+//
+//    public boolean isOnline () {
+//
+//        Runtime runtime = Runtime.getRuntime();
+//        try {
+//            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+//            int exitValue = ipProcess.waitFor();
+//            return (exitValue == 0);
+//        } catch (IOException | InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return false;
+//    }
 
-    public boolean isOnline () {
+//    public class Check extends AsyncTask<Void, Void, Void> {
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//
+//            circularProgressIndicator.setVisibility(View.VISIBLE);
+//            fullLayout.setVisibility(View.GONE);
+//        }
+//
+//        @Override
+//        protected Void doInBackground(Void... voids) {
+//            if (isConnected() && isOnline()) {
+//
+//                MonthData();
+//                if (connected) {
+//                    conn = true;
+//                }
+//
+//            } else {
+//                conn = false;
+//            }
+//
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Void aVoid) {
+//            super.onPostExecute(aVoid);
+//
+//            circularProgressIndicator.setVisibility(View.GONE);
+//            fullLayout.setVisibility(View.VISIBLE);
+//
+//            if (conn) {
+//
+//                conn = false;
+//                connected = false;
+//
+//                contributorAdapter = new ContributorAdapter(contributionLIsts, MonthlyTransaction.this);
+//                recyclerView.setAdapter(contributorAdapter);
+//
+//                inBalanceAdapter = new InOutBalanceAdapter(inBalanceSheetLists,MonthlyTransaction.this);
+//                inView.setAdapter(inBalanceAdapter);
+//
+//                totalIn.setText(total_in_amount);
+//
+//                outBalanceAdapter = new InOutBalanceAdapter(outBalanceSheetLists,MonthlyTransaction.this);
+//                outView.setAdapter(outBalanceAdapter);
+//
+//                totalOut.setText(total_out_amount);
+//                totalBalance.setText(balance_amount);
+//
+//            } else {
+//                Toast.makeText(getApplicationContext(), "No Internet Connection or Slow Connection", Toast.LENGTH_SHORT).show();
+//                AlertDialog dialog = new AlertDialog.Builder(MonthlyTransaction.this)
+//                        .setMessage("Please Check Your Internet Connection")
+//                        .setPositiveButton("Retry", null)
+//                        .setNegativeButton("Cancel",null)
+//                        .show();
+//
+//                dialog.setCancelable(false);
+//                dialog.setCanceledOnTouchOutside(false);
+//                Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//                positive.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        mTask = new Check().execute();
+//                        dialog.dismiss();
+//                    }
+//                });
+//                Button negative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+//                negative.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        dialog.dismiss();
+//                        finish();
+//                    }
+//                });
+//            }
+//        }
+//    }
 
-        Runtime runtime = Runtime.getRuntime();
-        try {
-            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
-            int exitValue = ipProcess.waitFor();
-            return (exitValue == 0);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+//    public void MonthData () {
+//
+//        try {
+//            this.connection = createConnection();
+//
+//            Statement stmt = connection.createStatement();
+//
+//            contributionLIsts = new ArrayList<>();
+//            inBalanceSheetLists = new ArrayList<>();
+//            outBalanceSheetLists = new ArrayList<>();
+//
+//            ResultSet rs = stmt.executeQuery("Select PID, PNAME, SUM(PETUK_CREDIT.PC_AMOUNT) P\n" +
+//                    "FROM PETUKS,PETUK_CREDIT\n" +
+//                    "WHERE PETUK_CREDIT.PC_PID = PETUKS.PID\n" +
+//                    "AND PC_MONTH = '"+month+"'\n" +
+//                    "AND PC_YEAR = '"+year+"'\n" +
+//                    "GROUP BY PID,PNAME\n" +
+//                    "ORDER BY P desc");
+//            while (rs.next()) {
+//                contributionLIsts.add(new ContributionLIst(rs.getString(2),rs.getString(3) + " TK"));
+//            }
+//            rs.close();
+//
+//            ResultSet rs1 = stmt.executeQuery("SELECT TO_CHAR(PC_DATE,'DD-MON-YY'), PNAME, PC_AMOUNT FROM PETUKS, petuk_credit\n" +
+//                    "WHERE PETUKS.PID = PETUK_CREDIT.PC_PID\n" +
+//                    "AND PETUK_CREDIT.PC_MONTH = '"+month+"'\n" +
+//                    "AND PETUK_CREDIT.PC_YEAR = '"+year+"'\n" +
+//                    "order by PC_DATE desc");
+//            int i = 0;
+//            while (rs1.next()) {
+//                i++;
+//                inBalanceSheetLists.add(new InOutBalanceSheetList(String.valueOf(i),rs1.getString(1),rs1.getString(2),
+//                        rs1.getString(3),""));
+//            }
+//            rs1.close();
+//
+//            ResultSet rs2 = stmt.executeQuery("SELECT TO_CHAR(PD_DATE,'DD-MON-YY'), PNAME, PD_AMOUNT FROM PETUKS, petuk_debit\n" +
+//                    "WHERE PETUKS.PID = petuk_debit.PD_PID\n" +
+//                    "AND petuk_debit.PD_MONTH = '"+month+"'\n" +
+//                    "AND petuk_debit.PD_YEAR = '"+year+"'\n" +
+//                    "order by PD_DATE desc");
+//            int j = 0;
+//            while (rs2.next()) {
+//                j++;
+//                outBalanceSheetLists.add(new InOutBalanceSheetList(String.valueOf(j),rs2.getString(1),rs2.getString(2),"",
+//                        rs2.getString(3)));
+//            }
+//            rs2.close();
+//
+//            connected = true;
+//
+//            connection.close();
+//
+//        } catch (Exception e) {
+//
+//            Log.i("ERRRRR", e.getLocalizedMessage());
+//            e.printStackTrace();
+//        }
+//
+//    }
 
-        return false;
-    }
+    public void getMonthData() {
+        circularProgressIndicator.setVisibility(View.VISIBLE);
+        fullLayout.setVisibility(View.GONE);
+        loading = true;
+        conn = false;
 
-    public class Check extends AsyncTask<Void, Void, Void> {
+        contributionLIsts = new ArrayList<>();
+        inBalanceSheetLists = new ArrayList<>();
+        outBalanceSheetLists = new ArrayList<>();
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+        String contributionUrl = "http://103.56.208.123:8001/apex/petuk_api/monthly_balance/contributions?pc_month="+month+"&pc_year="+year;
+        String inSheetUrl = "http://103.56.208.123:8001/apex/petuk_api/monthly_balance/in_sheet?pc_month="+month+"&pc_year="+year;
+        String outSheetUrl = "http://103.56.208.123:8001/apex/petuk_api/monthly_balance/out_sheet?pd_month="+month+"&pd_year="+year;
 
-            circularProgressIndicator.setVisibility(View.VISIBLE);
-            fullLayout.setVisibility(View.GONE);
-        }
+        RequestQueue requestQueue = Volley.newRequestQueue(MonthlyTransaction.this);
 
-        @Override
-        protected Void doInBackground(Void... voids) {
-            if (isConnected() && isOnline()) {
+        StringRequest outRequest = new StringRequest(Request.Method.GET, outSheetUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String items = jsonObject.getString("items");
+                    String count = jsonObject.getString("count");
+                    if (!count.equals("0")) {
 
-                MonthData();
-                if (connected) {
+                        JSONArray array = new JSONArray(items);
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject transInfo = array.getJSONObject(i);
+                            String t_date = transInfo.getString("t_date");
+                            String pname = transInfo.getString("pname");
+                            String pd_amount = transInfo.getString("pd_amount");
+
+                            outBalanceSheetLists.add(new InOutBalanceSheetList(String.valueOf(i+1),t_date,pname,"",
+                                    pd_amount));
+                        }
+                    }
+
                     conn = true;
+                    updateInterface();
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    conn = false;
+                    updateInterface();
                 }
-
-            } else {
-                conn = false;
             }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            circularProgressIndicator.setVisibility(View.GONE);
-            fullLayout.setVisibility(View.VISIBLE);
-
-            if (conn) {
-
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
                 conn = false;
-                connected = false;
-
-                contributorAdapter = new ContributorAdapter(contributionLIsts, MonthlyTransaction.this);
-                recyclerView.setAdapter(contributorAdapter);
-
-                inBalanceAdapter = new InOutBalanceAdapter(inBalanceSheetLists,MonthlyTransaction.this);
-                inView.setAdapter(inBalanceAdapter);
-
-                totalIn.setText(total_in_amount);
-
-                outBalanceAdapter = new InOutBalanceAdapter(outBalanceSheetLists,MonthlyTransaction.this);
-                outView.setAdapter(outBalanceAdapter);
-
-                totalOut.setText(total_out_amount);
-                totalBalance.setText(balance_amount);
-
-            } else {
-                Toast.makeText(getApplicationContext(), "No Internet Connection or Slow Connection", Toast.LENGTH_SHORT).show();
-                AlertDialog dialog = new AlertDialog.Builder(MonthlyTransaction.this)
-                        .setMessage("Please Check Your Internet Connection")
-                        .setPositiveButton("Retry", null)
-                        .setNegativeButton("Cancel",null)
-                        .show();
-
-                dialog.setCancelable(false);
-                dialog.setCanceledOnTouchOutside(false);
-                Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positive.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        mTask = new Check().execute();
-                        dialog.dismiss();
-                    }
-                });
-                Button negative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                negative.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                        finish();
-                    }
-                });
+                updateInterface();
             }
-        }
+        });
+
+        StringRequest inRequest = new StringRequest(Request.Method.GET, inSheetUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String items = jsonObject.getString("items");
+                    String count = jsonObject.getString("count");
+                    if (!count.equals("0")) {
+
+                        JSONArray array = new JSONArray(items);
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject transInfo = array.getJSONObject(i);
+                            String t_date = transInfo.getString("t_date");
+                            String pname = transInfo.getString("pname");
+                            String pc_amount = transInfo.getString("pc_amount");
+
+                            inBalanceSheetLists.add(new InOutBalanceSheetList(String.valueOf(i+1),t_date,pname,
+                                    pc_amount,""));
+                        }
+                    }
+
+                    requestQueue.add(outRequest);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    conn = false;
+                    updateInterface();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                conn = false;
+                updateInterface();
+            }
+        });
+
+        StringRequest conRequest = new StringRequest(Request.Method.GET, contributionUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String items = jsonObject.getString("items");
+                    String count = jsonObject.getString("count");
+                    if (!count.equals("0")) {
+
+                        JSONArray array = new JSONArray(items);
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject transInfo = array.getJSONObject(i);
+                            String pid = transInfo.getString("pid");
+                            String pname = transInfo.getString("pname");
+                            String p = transInfo.getString("p");
+
+                            contributionLIsts.add(new ContributionLIst(pname,p));
+                        }
+                    }
+
+                    requestQueue.add(inRequest);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    conn = false;
+                    updateInterface();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                conn = false;
+                updateInterface();
+            }
+        });
+
+        requestQueue.add(conRequest);
     }
 
-    public void MonthData () {
+    public void updateInterface() {
+        circularProgressIndicator.setVisibility(View.GONE);
+        fullLayout.setVisibility(View.VISIBLE);
+        loading = false;
 
-        try {
-            this.connection = createConnection();
+        if (conn) {
 
-            Statement stmt = connection.createStatement();
+            conn = false;
 
-            contributionLIsts = new ArrayList<>();
-            inBalanceSheetLists = new ArrayList<>();
-            outBalanceSheetLists = new ArrayList<>();
+            contributorAdapter = new ContributorAdapter(contributionLIsts, MonthlyTransaction.this);
+            recyclerView.setAdapter(contributorAdapter);
 
-            ResultSet rs = stmt.executeQuery("Select PID, PNAME, SUM(PETUK_CREDIT.PC_AMOUNT) P\n" +
-                    "FROM PETUKS,PETUK_CREDIT\n" +
-                    "WHERE PETUK_CREDIT.PC_PID = PETUKS.PID\n" +
-                    "AND PC_MONTH = '"+month+"'\n" +
-                    "AND PC_YEAR = '"+year+"'\n" +
-                    "GROUP BY PID,PNAME\n" +
-                    "ORDER BY P desc");
-            while (rs.next()) {
-                contributionLIsts.add(new ContributionLIst(rs.getString(2),rs.getString(3) + " TK"));
-            }
-            rs.close();
+            inBalanceAdapter = new InOutBalanceAdapter(inBalanceSheetLists,MonthlyTransaction.this);
+            inView.setAdapter(inBalanceAdapter);
 
-            ResultSet rs1 = stmt.executeQuery("SELECT TO_CHAR(PC_DATE,'DD-MON-YY'), PNAME, PC_AMOUNT FROM PETUKS, petuk_credit\n" +
-                    "WHERE PETUKS.PID = PETUK_CREDIT.PC_PID\n" +
-                    "AND PETUK_CREDIT.PC_MONTH = '"+month+"'\n" +
-                    "AND PETUK_CREDIT.PC_YEAR = '"+year+"'\n" +
-                    "order by PC_DATE desc");
-            int i = 0;
-            while (rs1.next()) {
-                i++;
-                inBalanceSheetLists.add(new InOutBalanceSheetList(String.valueOf(i),rs1.getString(1),rs1.getString(2),
-                        rs1.getString(3),""));
-            }
-            rs1.close();
+            totalIn.setText(total_in_amount);
 
-            ResultSet rs2 = stmt.executeQuery("SELECT TO_CHAR(PD_DATE,'DD-MON-YY'), PNAME, PD_AMOUNT FROM PETUKS, petuk_debit\n" +
-                    "WHERE PETUKS.PID = petuk_debit.PD_PID\n" +
-                    "AND petuk_debit.PD_MONTH = '"+month+"'\n" +
-                    "AND petuk_debit.PD_YEAR = '"+year+"'\n" +
-                    "order by PD_DATE desc");
-            int j = 0;
-            while (rs2.next()) {
-                j++;
-                outBalanceSheetLists.add(new InOutBalanceSheetList(String.valueOf(j),rs2.getString(1),rs2.getString(2),"",
-                        rs2.getString(3)));
-            }
-            rs2.close();
+            outBalanceAdapter = new InOutBalanceAdapter(outBalanceSheetLists,MonthlyTransaction.this);
+            outView.setAdapter(outBalanceAdapter);
 
-            connected = true;
+            totalOut.setText(total_out_amount);
+            totalBalance.setText(balance_amount);
 
-            connection.close();
+        } else {
+            Toast.makeText(getApplicationContext(), "No Internet Connection or Slow Connection", Toast.LENGTH_SHORT).show();
+            AlertDialog dialog = new AlertDialog.Builder(MonthlyTransaction.this)
+                    .setMessage("Please Check Your Internet Connection")
+                    .setPositiveButton("Retry", null)
+                    .setNegativeButton("Cancel",null)
+                    .show();
 
-        } catch (Exception e) {
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positive.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            Log.i("ERRRRR", e.getLocalizedMessage());
-            e.printStackTrace();
+                    getMonthData();
+                    dialog.dismiss();
+                }
+            });
+            Button negative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+            negative.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                    finish();
+                }
+            });
         }
-
     }
 }
