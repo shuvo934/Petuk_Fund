@@ -38,6 +38,7 @@ import com.shuvo.ttit.petukfund.R;
 //import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class UpdateProfile extends AppCompatActivity {
 
@@ -97,17 +98,14 @@ public class UpdateProfile extends AppCompatActivity {
 
         editText.setText(text);
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                text = editText.getText().toString();
-                if (!text.isEmpty()) {
+        save.setOnClickListener(view -> {
+            text = Objects.requireNonNull(editText.getText()).toString();
+            if (!text.isEmpty()) {
 //                    mTask = new UpdateCheck().execute();
-                    updateUserInfo();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(),"Please give information to update",Toast.LENGTH_SHORT).show();
-                }
+                updateUserInfo();
+            }
+            else {
+                Toast.makeText(getApplicationContext(),"Please give information to update",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -299,25 +297,19 @@ public class UpdateProfile extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(UpdateProfile.this);
 
         String finalValueKey = valueKey;
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                System.out.println("RESPONSE ADDED: 101");
-                conn = true;
-                updateInterface();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("Failed to Upload Data: 102");
-                conn = false;
-                updateInterface();
-            }
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
+            System.out.println("RESPONSE ADDED: 101");
+            conn = true;
+            updateInterface();
+        }, error -> {
+            System.out.println("Failed to Upload Data: 102");
+            conn = false;
+            updateInterface();
         }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 System.out.println("103");
                 params.put("pid",p_id);
                 params.put(finalValueKey, text);
@@ -364,13 +356,10 @@ public class UpdateProfile extends AppCompatActivity {
                     .show();
 
             Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positive.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            positive.setOnClickListener(v -> {
 
-                    updateUserInfo();
-                    dialog.dismiss();
-                }
+                updateUserInfo();
+                dialog.dismiss();
             });
         }
     }
